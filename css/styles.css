@@ -1,0 +1,68 @@
+html {
+  font-size: 16px;
+  padding:0;
+  margin:0;
+  font-family: 'Lato', sans-serif;
+}
+
+body {
+  padding:0;
+  overflow: hidden;
+}
+
+div {
+  margin:0;
+  padding:0;
+}
+
+#pdf-btn {
+  display: flex;
+}
+
+img.icon {
+  height:22px;
+}
+
+.btn-icon {
+  min-width: 60px;
+}
+
+.btn-label {
+  font-size: 10px;
+}
+
+.center {
+  -ms-flex-pack: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  text-align: center;
+}
+/*Vertically center aligned*/
+.vert-center {
+  display:flex;
+  -ms-flex-align: center;
+ -webkit-box-align: center;
+ align-items: center;
+}
+
+button {
+  font-size: 0.875rem;
+  width: 100%;
+  outline:0;
+  padding: .5rem 0rem;
+  border: 0px;
+  background-color: transparent;
+  display: block;
+  text-transform: none;
+  vertical-align: middle;
+  -webkit-tap-highlight-color: transparent;
+  text-align: center;
+  text-decoration:none;
+  letter-spacing:.5px;
+  cursor:pointer;
+  margin-top:1rem;
+}
+
+button:hover {
+  background-color: rgba(0, 0, 0, 0.10);
+}
