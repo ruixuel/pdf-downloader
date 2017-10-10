@@ -11,6 +11,7 @@ function download() {
     alert("Invalid input");
     return;
   }
+  // open new window contains the map image
   newWindow = window.open();
   var doc = new jsPDF('p', 'pt', 'a4');
   var width = doc.internal.pageSize.width;
@@ -37,6 +38,7 @@ function download() {
             for (let i = 0; i < tiles.length; i++) {
               for (let j = 0; j < tiles[0].length; j++) {
                 let tileUrl = tiles[i][j];
+                // calculate the position of the tile
                 let style = 'style="width:' + imageSize + 'px; height=' + imageSize + 'px;' +
                   'left:' + (initialLeft + j * imageSize) + 'px; top:' + (i * imageSize) + 'px; position:absolute"';
                 map += '<img src="' + tileUrl + '" ' + style + '></img>';
@@ -45,8 +47,11 @@ function download() {
           }
 
           map += "</div>";
+
+          // write the map image html to the new window
           newWindow.document.write(map);
           newWindow.document.close();
+          // when window finishes loading, open print window
           newWindow.onload = function(){
             newWindow.print();
           };
@@ -94,7 +99,6 @@ function getTilesFromGeometry(geometry, template, zoom) {
           y,
           z: zoom
         }))
-        // tiles.push(replaceInTemplate({x, y, z: zoom}))
     }
     tiles.push(tilesX);
   }

@@ -37,19 +37,24 @@ function download() {
             for (let i = 0; i < tiles.length; i++) {
               for (let j = 0; j < tiles[0].length; j++) {
                 let tileUrl = tiles[i][j];
-                let img = document.createElement("img");
-                img.src = tileUrl;
-                img.style.width = imageSize;
-                img.style.height = imageSize;
-                img.style.left = initialLeft + j * imageSize;
-                img.style.top = i * imageSize;
-                img.style.position = "absolute";
-                map.appendChild(img);
+
+                toDataURL(tileUrl, function(imageDataURL){
+                  //build the map image dom node
+                  let img = document.createElement("img");
+                  img.src = imageDataURL;
+                  img.style.width = imageSize;
+                  img.style.height = imageSize;
+                  img.style.left = initialLeft + j * imageSize;
+                  img.style.top = i * imageSize;
+                  img.style.position = "absolute";
+                  map.appendChild(img);
+                })
+
               }
             }
           }
 
-          // Generate PDF
+          // Generate PDF using jspdf api
           doc.addHTML(map,10,10, {useCORS:true, allowTaint:true});
           doc.save('map.pdf');
         });
@@ -58,29 +63,31 @@ function download() {
 }
 
 /*
- * Convert the image to dataURL. Need to add dataURL to image.
+ * Convert the image to dataURL. Need to add dataURL to image src.
+ * Try to use this method to fetch cross origin image, but not work.
+ * Some configuration in the server side needs to be changed.
  */
 
-// function toDataURL(url, callback) {
-//   var xhr;
-//   if (window.XMLHttpRequest) {
-//       xhr = new XMLHttpRequest();
-//   } else {
-//       xhr = new ActiveXObject("Microsoft.XMLHTTP");
-//   }
-//   xhr.onload = function() {
-//     var reader = new FileReader();
-//     reader.onloadend = function() {
-//       callback(reader.result);
-//     }
-//     reader.readAsDataURL(xhr.response);
-//   };
-//   xhr.open('GET', url);
-//   xhr.setRequestHeader('Access-Control-Allow-Headers', '*');
-//   xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
-//   xhr.responseType = 'blob';
-//   xhr.send();
-// }
+function toDataURL(url, callback) {
+  var xhr;
+  if (window.XMLHttpRequest) {
+      xhr = new XMLHttpRequest();
+  } else {
+      xhr = new ActiveXObject("Microsoft.XMLHTTP");
+  }
+  xhr.onload = function() {
+    var reader = new FileReader();
+    reader.onloadend = function() {
+      callback(reader.result);
+    }
+    reader.readAsDataURL(xhr.response);
+  };
+  xhr.open('GET', url);
+  xhr.setRequestHeader('Access-Control-Allow-Headers', '*');
+  xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
+  xhr.responseType = 'blob';
+  xhr.send();
+}
 
 
 function getTilesFromGeometry(geometry, template, zoom) {
